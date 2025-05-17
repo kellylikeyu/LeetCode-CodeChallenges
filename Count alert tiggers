@@ -1,0 +1,25 @@
+You are given a list of integers errors, where each element represents the number of errors recorded by a service during a specific hour. Additionally, you are provided with an SLO (service level objective) configuration that includes:
+threshold: The maximum allowable errors in any given hour.
+duration: The number of consecutive hours to monitor.
+percent: The minimum percentage of time during the monitoring period that the error count must exceed the threshold to trigger an alert. In other words, an alert is triggered only if errors stay above the threshold for at least this portion of the time.
+
+function shouldTriggerAlert(errors, threshold, duration, percent) {
+    const n = errors.length;
+    const requiredAboveThreshold = Math.ceil((percent / 100) * duration);
+
+    for (let i = 0; i <= n - duration; i++) {
+        let count = 0;
+
+        for (let j = 0; j < duration; j++) {
+            if (errors[i + j] > threshold) {
+                count++;
+            }
+        }
+
+        if (count >= requiredAboveThreshold) {
+            return true; // Alert triggered
+        }
+    }
+
+    return false; // No alert in any window
+}
