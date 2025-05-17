@@ -1,0 +1,18 @@
+Given two business names represented as strings s1 and s2, compute the Jaccard similarity index. The index is defined as the ratio between the number of common distinct words and the total number of distinct words from both strings. The result should be rounded to two decimal places. If both input strings are empty, return 1.0.
+Constraints:
+Each input string consists of words separated by one space.
+Business names are case-sensitive.
+
+
+function jaccardSimilarity(s1, s2) {
+    if (s1.trim() === "" && s2.trim() === "") return 1.0;
+
+    const set1 = new Set(s1.trim().split(" ").filter(Boolean));
+    const set2 = new Set(s2.trim().split(" ").filter(Boolean));
+
+    const intersection = new Set([...set1].filter(word => set2.has(word)));
+    const union = new Set([...set1, ...set2]);
+
+    const similarity = intersection.size / union.size;
+    return parseFloat(similarity.toFixed(2));
+}
