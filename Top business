@@ -1,0 +1,51 @@
+Given an array of business names bizNames, implement a function that returns the top k names containing a given prefix. The prefix should match any word in a business name (case-insensitively). Names are ranked first by the word's position where the prefix first appears, and then alphabetically if there's a tie.
+
+Constraints:
+
+Each business name is a non-empty string consisting of words separated by a space.
+The prefix is a non-empty string and the prefix matching is case-insensitive.
+k is a positive integer.
+Example 1:
+
+Input: bizNames = ["Bobs Burgers", "Burger King", "McDonald's", "Five Guys", "Super Duper Burgers", "Wahlburgers"], prefix = "Bur", k = 2
+Output: ["Burger King", "Bobs Burgers"]
+Explanation:
+
+For "Burger King", splitting yields ["Burger", "King"], and the prefix "Bur" matches "Burger" at index 0.
+For "Bobs Burgers", splitting yields ["Bobs", "Burgers"], where "Burgers" (at index 1) is the first match.
+Sorted by the occurrence index, the top 2 names are ["Burger King", "Bobs Burgers"].
+Example 2:
+
+Input: bizNames = ["Apple Store", "Google", "Microsoft"], prefix = "Z", k = 2
+Output: []
+
+Example 3:
+
+Input: bizNames = ["Alpha Beta", "Alpha Gamma", "Beta Alpha", "AlphaGo"], prefix = "alpha", k = 2
+Output: ["Alpha Beta", "Alpha Gamma"]
+
+
+function getTopKBusinesses(bizNames, prefix, k) {
+    const lowerPrefix = prefix.toLowerCase();
+    const matched = [];
+
+    for (let name of bizNames) {
+        const words = name.split(" ");
+        for (let i = 0; i < words.length; i++) {
+            if (words[i].toLowerCase().startsWith(lowerPrefix)) {
+                matched.push({ name, index: i });
+                break; // Only consider the first match
+            }
+        }
+    }
+
+    matched.sort((a, b) => {
+        if (a.index !== b.index) {
+            return a.index - b.index; // Sort by first matched word index
+        } else {
+            return a.name.localeCompare(b.name); // Tie-breaker: alphabetically
+        }
+    });
+
+    return matched.slice(0, k).map(item => item.name);
+}
