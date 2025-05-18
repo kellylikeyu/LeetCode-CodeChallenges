@@ -1,0 +1,19 @@
+(This question is a variation of the LeetCode question 692. Top K Frequent Words. If you haven't completed that question yet, it is recommended to solve it first.)
+You are given an array of messages where each element is a triplet: [<sender>, <receiver>, <message>]. For each sender-receiver pair, if the sender sends multiple messages to the same receiver, they are considered duplicates (spam).
+
+function findSpamMessages(messages) {
+    const pairCount = new Map();
+    const spammers = new Set();
+
+    for (const [sender, receiver] of messages) {
+        const key = `${sender}->${receiver}`;
+        const count = (pairCount.get(key) || 0) + 1;
+        pairCount.set(key, count);
+
+        if (count > 1) {
+            spammers.add(key);
+        }
+    }
+
+    return Array.from(spammers);
+}
