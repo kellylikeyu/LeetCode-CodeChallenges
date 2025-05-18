@@ -1,0 +1,40 @@
+Given an array of strings words and an integer k, return the k most frequent strings.
+
+Return the answer sorted by the frequency from highest to lowest. Sort the words with the same frequency by their lexicographical order.
+
+ 
+
+Example 1:
+
+Input: words = ["i","love","leetcode","i","love","coding"], k = 2
+Output: ["i","love"]
+Explanation: "i" and "love" are the two most frequent words.
+Note that "i" comes before "love" due to a lower alphabetical order.
+
+/**
+ * @param {string[]} words
+ * @param {number} k
+ * @return {string[]}
+ */
+var topKFrequent = function(words, k) {
+    const wordFrequency = {};
+
+    // Build frequency map
+    for (const word of words) {
+        wordFrequency[word] = (wordFrequency[word] || 0) + 1;
+    }
+
+    // Convert frequency map to an array of [word, frequency] pairs
+    const sortedWords = Object.entries(wordFrequency)
+        .sort((a, b) => {
+            // Sort by frequency first (descending), then by word (ascending)
+            if (b[1] !== a[1]) {
+                return b[1] - a[1];
+            } else {
+                return a[0].localeCompare(b[0]);
+            }
+        });
+
+    // Extract the top k words
+    return sortedWords.slice(0, k).map(([word]) => word);
+};
