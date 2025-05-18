@@ -1,0 +1,25 @@
+
+Given an array of users, implement a function that generates random pairings such that each possible pairing configuration is equally likely. The pairing should follow these rules:
+Each pair is formed by randomly selecting two distinct users until fewer than two users remain.
+The pairing process must be uniformly random, ensuring that every valid set of pairings has an equal probability of being chosen.
+If the total number of users is odd, one user will remain unmatched.
+
+function generateRandomPairings(users) {
+    // Fisher-Yates Shuffle
+    for (let i = users.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [users[i], users[j]] = [users[j], users[i]];
+    }
+
+    const pairs = [];
+    for (let i = 0; i + 1 < users.length; i += 2) {
+        pairs.push([users[i], users[i + 1]]);
+    }
+
+    // If there's an unpaired user (odd count), return them separately
+    if (users.length % 2 === 1) {
+        return { pairs, unmatched: users[users.length - 1] };
+    } else {
+        return { pairs, unmatched: null };
+    }
+}
