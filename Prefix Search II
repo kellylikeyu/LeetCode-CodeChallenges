@@ -1,0 +1,26 @@
+Given a list of business names bizNames and a series of prefix queries, implement an efficient search that returns all business names where at least one individual word starts with the given prefix. The match is case insensitive. For each business name, if the prefix occurs in multiple words, only the first (leftmost) occurrence is considered for sorting.
+
+function searchBusinesses(bizNames, prefix) {
+    const lowerPrefix = prefix.toLowerCase();
+    const matches = [];
+
+    for (const name of bizNames) {
+        const words = name.split(" ");
+        for (let i = 0; i < words.length; i++) {
+            if (words[i].toLowerCase().startsWith(lowerPrefix)) {
+                matches.push({ name, index: i });
+                break; // only consider first matching word
+            }
+        }
+    }
+
+    // Sort by index, then alphabetically
+    matches.sort((a, b) => {
+        if (a.index !== b.index) {
+            return a.index - b.index;
+        }
+        return a.name.localeCompare(b.name);
+    });
+
+    return matches.map(m => m.name);
+}
