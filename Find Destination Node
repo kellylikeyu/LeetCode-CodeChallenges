@@ -1,0 +1,17 @@
+Given a list of directed edges edges representing one-way connections between nodes in a graph and a starting node start. Each edge is given as a two-element array [u, v] where u is the source node and v is the target node. Your task is to find the destination node (a node without outgoing edges) by traveling from the starting node along these directed edges until you reach the destination.
+
+function findDestination(edges, start) {
+    // Build a map from each node to its next node
+    const graph = new Map();
+    for (const [u, v] of edges) {
+        graph.set(u, v);
+    }
+
+    // Traverse from start until there's no outgoing edge
+    let current = start;
+    while (graph.has(current)) {
+        current = graph.get(current);
+    }
+
+    return current;
+}
