@@ -1,0 +1,20 @@
+// Given two strings str1 and str2, implement a function that concatenates them by merging the longest common substring that appears as a suffix of str1 and a prefix of str2.
+
+function mergeWithOverlap(str1, str2) {
+    const combined = str2 + "#" + str1.slice(Math.max(0, str1.length - str2.length));
+    const lps = new Array(combined.length).fill(0);
+    
+    for (let i = 1; i < combined.length; i++) {
+        let j = lps[i - 1];
+        while (j > 0 && combined[i] !== combined[j]) {
+            j = lps[j - 1];
+        }
+        if (combined[i] === combined[j]) {
+            j++;
+        }
+        lps[i] = j;
+    }
+
+    const overlap = lps[combined.length - 1];
+    return str1 + str2.slice(overlap);
+}
