@@ -1,0 +1,30 @@
+Given an input text consisting of words separated by spaces, along with a dictionary of valid bigram (each represented as two space-separated words), your task is to segment the string so that any two consecutive words forming a valid bigram are grouped together. All other words should remain as individual tokens, and your segmentation should follow these rules:
+Maintain the original relative order of the splitter words as they appear in the input.
+Merge any two consecutive words into a single token if they appear as a valid bigram in the dictionary.
+In cases where multiple bigram matches could overlap, always prioritize the leftmost valid match and skip over any overlapping words.
+Constraints:
+The input text is a non-empty string and contains words separated by spaces.
+Each word only consists of lowercase letters.
+
+
+function segmentTextWithBigrams(text, bigramList) {
+    const words = text.split(" ");
+    const bigramSet = new Set(bigramList);
+    const result = [];
+
+    let i = 0;
+    while (i < words.length) {
+        if (i < words.length - 1) {
+            const twoWord = `${words[i]} ${words[i + 1]}`;
+            if (bigramSet.has(twoWord)) {
+                result.push(twoWord);
+                i += 2; // Skip the next word as it's part of the bigram
+                continue;
+            }
+        }
+        result.push(words[i]);
+        i++;
+    }
+
+    return result;
+}
